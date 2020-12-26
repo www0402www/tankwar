@@ -4,7 +4,7 @@ import java.awt.event.KeyEvent;
 
 public class TankGame {
     public static void main(String[] args) {
-        GameClient gameClient = new GameClient(800, 600);
+        GameClient gameClient = new GameClient(800, 800);
         JFrame frame = new JFrame();
         frame.add(gameClient);
         frame.setVisible(true);
@@ -15,9 +15,7 @@ public class TankGame {
 
         frame.addKeyListener(new KeyAdapter() {
             public void keyPressed(KeyEvent e) {
-                //super.keyPressed(e);
                 gameClient.keyPressed(e);
-                //System.out.println((char) e.getKeyCode());
             }
 
             @Override

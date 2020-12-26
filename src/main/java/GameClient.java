@@ -1,15 +1,17 @@
 import object.Direction;
-import object.Tank;
 
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.KeyEvent;
+import java.util.ArrayList;
 
 
 public class GameClient extends JComponent {
     private int screenWidth;
     private int screenHeight;
     private Tank playerTank;
+    private ArrayList<Tank> enemyTanks = new ArrayList<>();
+    private ArrayList<Wall> walls = new ArrayList<>();
 
 
     public GameClient(int screenWidth, int screenHeight) {
@@ -32,19 +34,42 @@ public class GameClient extends JComponent {
                 }
             }
         }).start();
-
     }
 
     public void init() {
-        playerTank = new Tank(40, 40, Direction.DOWN);
+        Image[] brickImage = {Tools.getImage("brick.png")};
+        Image[] iTankImage = new Image[8];
+        Image[] eTankImage = new Image[8];
+
+        String[] sub = {"U.png", "D.png", "L.png", "R.png", "LU.png", "RU.png", "LD.png", "RD.png"};
+        for (int i = 0; i < iTankImage.length; i++) {
+            iTankImage[i] = Tools.getImage("itank" + sub[i]);
+            eTankImage[i] = Tools.getImage("etank" + sub[i]);
+
+        }
+        playerTank = new Tank(100, 100, Direction.DOWN, iTankImage);
+        for (int i = 0; i < 3; i++) {
+            for (int j = 0; j < 4; j++) {
+                enemyTanks.add(new Tank(260 + j * 80, 350 + 80 * i, Direction.UP, true, eTankImage));
+            }
+        }
+        walls.add(new Wall(175, 200, true, 15, brickImage));
+        walls.add(new Wall(100, 200, false, 14, brickImage));
+        walls.add(new Wall(700, 200, false, 14, brickImage));
     }
+
 
     @Override
     protected void paintComponent(Graphics g) {
         g.setColor(Color.black);
         g.fillRect(0, 0, screenWidth, screenHeight);
 
-       playerTank.draw(g);
+        playerTank.draw(g);
+        for (Tank tank : enemyTanks) {
+            tank.draw(g);
+        }for(Wall wall:walls){
+            wall.draw(g);
+        }
 
     }
 
